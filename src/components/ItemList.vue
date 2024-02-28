@@ -58,13 +58,13 @@ const eventBus = inject("eventBus");
 eventBus.on("testSelectors", () => {
   console.log("[ema-popup] testSelectors");
   let totalElementsMasked = 0;
-  browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
+  chrome.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
     let currentTab = tabs[0];
     if (!currentTab) {
       return;
     }
     console.log("[ema-popup] injecting inject_styles.js in the current tab");
-    browser.scripting.executeScript({
+    chrome.scripting.executeScript({
       target: {
         tabId: currentTab.id,
       },
@@ -72,7 +72,7 @@ eventBus.on("testSelectors", () => {
     }).then(() => {
       for (let key in props.items) {
         let item = props.items[key];
-        browser.scripting.executeScript({
+        chrome.scripting.executeScript({
           target: {
             tabId: currentTab.id,
           },
@@ -101,7 +101,7 @@ eventBus.on("testSelectors", () => {
           args: [item.selector],
         }).then((result) => {
           totalElementsMasked += result[0].result;
-          browser.action.setBadgeText({ text: totalElementsMasked.toString() }).then(() => {
+          chrome.action.setBadgeText({ text: totalElementsMasked.toString() }).then(() => {
             setTimeout(() => {
               window.close();
             }, 0);

@@ -5,12 +5,17 @@ import vue from '@vitejs/plugin-vue'
 import execute from 'rollup-plugin-execute'
 import copy from 'rollup-plugin-copy-watch'
 
+let renderManifestCommand = 'VERSION=`monova` envsubst < manifest.template.firefox > dist/manifest.json';
+if (process.env.BROWSER === 'chrome') {
+  renderManifestCommand = 'VERSION=`monova` envsubst < manifest.template.chrome > dist/manifest.json';
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
     execute([
-      'VERSION=`monova` envsubst < manifest.template.firefox > dist/manifest.json'
+      renderManifestCommand
     ], {
       hook: 'writeBundle'
     }),

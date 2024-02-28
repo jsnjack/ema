@@ -13,10 +13,10 @@ const itemsList = ref({});
 
 onMounted(() => {
   // Reset badge text
-  browser.action.setBadgeText({ text: "" });
+  chrome.action.setBadgeText({ text: "" });
 
   // Read items from storage
-  browser.storage.local.get(null, function (items) {
+  chrome.storage.local.get(null, function (items) {
     // items is an object with items in storage
     for (let key in items) {
       console.log(`[ema-popup] found in storage ${key}`, items[key]);
@@ -25,7 +25,7 @@ onMounted(() => {
   });
 
   // Watch storage updates
-  browser.storage.onChanged.addListener(function (changes, area) {
+  chrome.storage.onChanged.addListener(function (changes, area) {
     console.log("[ema-popup] storage changed: ", changes);
     for (let key in changes) {
       if (changes[key].newValue) {
@@ -37,7 +37,7 @@ onMounted(() => {
   });
 
   // Connect to the background script
-  portToBackground = browser.runtime.connect({ name: "popup" });
+  portToBackground = chrome.runtime.connect({ name: "popup" });
   portToBackground.onMessage.addListener(function (msg) {
     console.log("[ema-popup] received msg from background script:", msg);
   });

@@ -30,13 +30,13 @@ const eventBus = inject("eventBus");
 function addNewItem() {
   emit("togglePopup");
 
-  browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
+  chrome.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
     let currentTab = tabs[0];
     if (!currentTab) {
       return;
     }
     console.log("[ema-popup] injecting inject.js in the current tab");
-    browser.scripting.executeScript({
+    chrome.scripting.executeScript({
       target: {
         tabId: currentTab.id,
       },
@@ -56,7 +56,7 @@ function copyAllSelectors() {
 }
 
 function openDocs() {
-  browser.tabs.create({ url: "https://docs.surfly.com" });
+  chrome.tabs.create({ url: "https://docs.surfly.com" });
   window.close();
 }
 </script>

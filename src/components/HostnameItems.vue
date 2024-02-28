@@ -21,7 +21,7 @@ const props = defineProps({
 });
 
 function open() {
-    browser.tabs.create({ url: `https://${props.hostname}` });
+    chrome.tabs.create({ url: `https://${props.hostname}` });
     window.close();
 }
 </script>

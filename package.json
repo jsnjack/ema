@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite build --watch",
     "open": "web-ext run -s dist",
-    "build": "vite build && web-ext build -s dist",
+    "build": "npm run build:firefox && npm run build:chrome",
+    "build:firefox": "vite build && web-ext build -s dist -o -n ema-firefox-latest.zip",
+    "build:chrome": "BROWSER=chrome vite build && web-ext build -s dist -o -n ema-chrome-latest.zip",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
     "test": "vitest"

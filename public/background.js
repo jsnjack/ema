@@ -1,6 +1,6 @@
 let portToPopup;
 
-browser.runtime.onConnect.addListener(function (port) {
+chrome.runtime.onConnect.addListener(function (port) {
     console.log("[ema-background] Connected to popup script");
     portToPopup = port;
 
@@ -15,17 +15,17 @@ browser.runtime.onConnect.addListener(function (port) {
     });
 });
 
-browser.runtime.onMessage.addListener(
+chrome.runtime.onMessage.addListener(
     function (message, sender, sendResponse) {
         if (message.signalID === "inject-return-data") {
             // The user wants to add the new item
-            browser.action.setBadgeText({ text: "+" });
+            chrome.action.setBadgeText({ text: "+" });
             // Generate unique id
             let id = "" + new Date().getTime();
             let obj = {};
             obj[id] = message.data;
             // Add new item to storage
-            browser.storage.local.set(obj);
+            chrome.storage.local.set(obj);
         }
     }
 );

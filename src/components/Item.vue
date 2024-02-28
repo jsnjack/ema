@@ -40,16 +40,16 @@ function startEditing() {
 
 function saveChanges() {
   props.item.selector = editedSelector.value;
-  browser.storage.local.set({ [props.itemKey]: props.item });
+  chrome.storage.local.set({ [props.itemKey]: props.item });
   editing.value = false;
 }
 
 function deleteItem() {
-  browser.storage.local.remove(props.itemKey);
+  chrome.storage.local.remove(props.itemKey);
 }
 
 function open() {
-  browser.tabs.create({ url: props.item.url });
+  chrome.tabs.create({ url: props.item.url });
   window.close();
 }
 
