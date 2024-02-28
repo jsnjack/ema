@@ -1,20 +1,20 @@
 <template>
   <div class="small-padding footer">
-    <nav>
-      <button @click="addNewItem" class="small">
-        <i>add</i>
-        <span>Add element</span>
+    <nav class="no-space">
+      <button @click="addNewItem" class="border left-round small">
+        <i class="small">add</i>
+        <span>Add</span>
       </button>
-      <button @click="testSelectors" class="small">
-        <i>experiment</i>
-        <span>Test selectors</span>
+      <button @click="testSelectors" class="border no-round small">
+        <i class="small">experiment</i>
+        <span>Test</span>
       </button>
-      <button @click="copyAllSelectors" class="small">
-        <i>content_copy</i>
-        <span>Copy all</span>
+      <button @click="copyAllSelectors" class="border right-round small">
+        <i class="small">content_copy</i>
+        <span>Copy</span>
       </button>
       <div class="max"></div>
-      <button @click="openDocs" class="small secondary">
+      <button @click="openDocs" class="transparent circle small">
         <i>help</i>
       </button>
     </nav>
