@@ -77,21 +77,31 @@ eventBus.on("testSelectors", () => {
             tabId: currentTab.id,
           },
           func: (selector) => {
-            let cleanedSelector = selector.trim();
-            let endsWithStar = false;
             let totalElementsMasked = 0;
-            if (selector.endsWith("*")) {
-              endsWithStar = true;
-              cleanedSelector = cleanedSelector.slice(0, -1);
-            }
-            let elements = document.querySelectorAll(cleanedSelector);
-            for (let i = 0; i < elements.length; i++) {
-              totalElementsMasked++;
-              elements[i].classList.add("pt-highlight");
-              if (endsWithStar) {
-                for (let el of elements[i].getElementsByTagName("*")) {
-                  totalElementsMasked++;
-                  el.classList.add("pt-highlight");
+            const cleanedSelectors = new Set();
+            // Emulate Surfly behavior by adding an extra selector with * in the end
+            selector.split(',').forEach(s => {
+              const baseSelector = s.trim();
+              cleanedSelectors.add(baseSelector);
+              if (!baseSelector.endsWith(' *')) {
+                cleanedSelectors.add(`${baseSelector} *`);
+              }
+            });
+            for (let sampleSelector of cleanedSelectors) {
+              let endsWithStar = false;
+              if (sampleSelector.endsWith("*")) {
+                endsWithStar = true;
+                sampleSelector = sampleSelector.slice(0, -1);
+              }
+              let elements = document.querySelectorAll(sampleSelector);
+              for (let i = 0; i < elements.length; i++) {
+                totalElementsMasked++;
+                elements[i].classList.add("pt-highlight");
+                if (endsWithStar) {
+                  for (let el of elements[i].getElementsByTagName("*")) {
+                    totalElementsMasked++;
+                    el.classList.add("pt-highlight");
+                  }
                 }
               }
             }

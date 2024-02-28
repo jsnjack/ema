@@ -107,7 +107,7 @@
         element.removeEventListener("mouseout", pt_remove_highlighter);
         pt_sendSignal("inject-return-data", {
             "url": window.location.href,
-            "selector": `${pt_getUniqueSelector(element)} *`,
+            "selector": pt_getUniqueSelector(element),
         });
         event.preventDefault();
         event.stopPropagation();
