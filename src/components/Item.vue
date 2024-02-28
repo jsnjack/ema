@@ -1,11 +1,16 @@
 <template>
   <div class="row item no-margin">
-    <div class="small-padding" @click="open" style="cursor: pointer">
-      <div class="crop-text">{{ props.item.title }}</div>
-      <div class="small-text">{{ hostname }}</div>
+    <div class="small-padding max">
+      <div v-if="!editing" class="medium-text" @dblclick="startEditing">{{ props.item.selector }}</div>
+      <div v-else class="field small">
+        <input type="text" class="medium-text" v-model="editedSelector" @blur="saveChanges" @keydown.enter="saveChanges">
+      </div>
     </div>
-    <div class="small-padding" @click="deleteItem">
-      <button class="small circle transparent">
+    <div>
+      <button class="small circle transparent" @click="open">
+        <i>open_in_new</i>
+      </button>
+      <button class="small circle transparent" @click="deleteItem">
         <i>delete</i>
       </button>
     </div>
@@ -13,8 +18,7 @@
 </template>
 
 <script setup>
-import { defineProps, onMounted, onBeforeUnmount } from "vue";
-
+import { defineProps, onMounted, onBeforeUnmount, ref } from "vue";
 
 const props = defineProps({
   item: {
@@ -27,8 +31,26 @@ const props = defineProps({
   },
 });
 
+const editing = ref(false);
+const editedSelector = ref(props.item.selector);
+
+function startEditing() {
+  editing.value = true;
+}
+
+function saveChanges() {
+  props.item.selector = editedSelector.value;
+  browser.storage.local.set({ [props.itemKey]: props.item });
+  editing.value = false;
+}
+
 function deleteItem() {
-  browser.storage.sync.remove(props.itemKey);
+  browser.storage.local.remove(props.itemKey);
+}
+
+function open() {
+  browser.tabs.create({ url: props.item.url });
+  window.close();
 }
 
 onMounted(() => {

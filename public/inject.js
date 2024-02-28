@@ -103,8 +103,8 @@
         element.classList.remove(pt_highlight_class);
         element.removeEventListener("mouseout", pt_remove_highlighter);
         pt_sendSignal("inject-return-data", {
-            "url": window.location.hostname,
-            "selector": pt_getUniqueSelector(element),
+            "url": window.location.href,
+            "selector": `${pt_getUniqueSelector(element)} *`,
         });
         event.preventDefault();
         event.stopPropagation();
@@ -119,7 +119,7 @@
         pt_highlight_class = "pt-highlight";
     document.getElementsByTagName("head")[0].appendChild(style);
     if (style.sheet) {
-        style.sheet.insertRule("." + pt_highlight_class + "{background: #f5ecb1;outline: dashed black 2px;}", 0);
+        style.sheet.insertRule("." + pt_highlight_class + "{background: #f5ecb1 !important; outline: dashed black 2px !important;}", 0);
     }
 
     // Add events to catch item

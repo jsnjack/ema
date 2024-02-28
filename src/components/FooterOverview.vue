@@ -3,18 +3,29 @@
     <nav>
       <button @click="addNewItem" class="small">
         <i>add</i>
-        <span>Add</span>
+        <span>Add element</span>
+      </button>
+      <button @click="testSelectors" class="small">
+        <i>experiment</i>
+        <span>Test selectors</span>
+      </button>
+      <button @click="copyAllSelectors" class="small">
+        <i>content_copy</i>
+        <span>Copy all</span>
       </button>
       <div class="max"></div>
-      <div>//Element Masking</div>
+      <button @click="openDocs" class="small secondary">
+        <i>help</i>
+      </button>
     </nav>
   </div>
 </template>
 
 <script setup>
-import { defineEmits } from "vue";
+import { defineEmits, inject } from "vue";
 
 const emit = defineEmits(["togglePopup"]);
+const eventBus = inject("eventBus");
 
 function addNewItem() {
   emit("togglePopup");
@@ -32,6 +43,21 @@ function addNewItem() {
       files: ["inject.js"],
     });
   });
+}
+
+function testSelectors() {
+  emit("togglePopup");
+  eventBus.emit("testSelectors");
+}
+
+function copyAllSelectors() {
+  emit("togglePopup");
+  eventBus.emit("copyAllSelectors");
+}
+
+function openDocs() {
+  browser.tabs.create({ url: "https://docs.surfly.com" });
+  window.close();
 }
 </script>
 

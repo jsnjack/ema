@@ -4,9 +4,7 @@ import "beercss";
 import FooterOverview from "./components/FooterOverview.vue";
 import ItemList from "./components/ItemList.vue";
 
-import { onMounted, onUnmounted, ref, inject } from "vue";
-
-const eventBus = inject("eventBus");
+import { onMounted, onUnmounted, ref } from "vue";
 
 let portToBackground = null;
 
@@ -18,7 +16,7 @@ onMounted(() => {
   browser.action.setBadgeText({ text: "" });
 
   // Read items from storage
-  browser.storage.sync.get(null, function (items) {
+  browser.storage.local.get(null, function (items) {
     // items is an object with items in storage
     for (let key in items) {
       console.log(`[ema-popup] found in storage ${key}`, items[key]);
