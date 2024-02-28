@@ -3,7 +3,7 @@
     function pt_sendSignal(signal_id, data) {
         // Send signal to main function
         console.log(`[ema-inject] sending signal ${signal_id}`, data);
-        browser.runtime.sendMessage({
+        chrome.runtime.sendMessage({
             signalID: signal_id,
             data: data
         });
@@ -42,30 +42,33 @@
         }
 
         // We might be able to find a unique class name
-        if (element.classList.length > 0) {
-            for (var i = 0; i < element.classList.length; i = i + 1) {
-                // Is this className unique by itself?
-                selector = '.' + element.classList.item(i);
-                matches = document.querySelectorAll(selector);
-                if (matches.length === 1) {
-                    return selector;
-                }
-                // Maybe it's unique with a tag name?
+        try {
+            if (element.classList.length > 0) {
+                for (var i = 0; i < element.classList.length; i = i + 1) {
+                    // Is this className unique by itself?
+                    selector = '.' + element.classList.item(i);
+                    matches = document.querySelectorAll(selector);
+                    if (matches.length === 1) {
+                        return selector;
+                    }
+                    // Maybe it's unique with a tag name?
 
-                selector = tagName + selector;
-                matches = document.querySelectorAll(selector);
-                if (matches.length === 1) {
-                    return selector;
-                }
-                // Maybe it's unique using a tag name and nth-child
+                    selector = tagName + selector;
+                    matches = document.querySelectorAll(selector);
+                    if (matches.length === 1) {
+                        return selector;
+                    }
+                    // Maybe it's unique using a tag name and nth-child
 
-                index = pt_positionInNodeList(element, element.parentNode.children) + 1;
-                selector = selector + ':nth-child(' + index + ')';
-                matches = document.querySelectorAll(selector);
-                if (matches.length === 1) {
-                    return selector;
+                    index = pt_positionInNodeList(element, element.parentNode.children) + 1;
+                    selector = selector + ':nth-child(' + index + ')';
+                    matches = document.querySelectorAll(selector);
+                    if (matches.length === 1) {
+                        return selector;
+                    }
                 }
             }
+        } catch (e) {
         }
         // Not unique enough yet.  As long as it's not a child of the document,
         // continue recursing up until it is unique enough.
